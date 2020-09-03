@@ -47,12 +47,6 @@ public class JavaCodeGenerator {
 				generateFile(template,data,"WebController","web");
 				
 				
-				template = cfg.getTemplate(CLASSPATH_RESOURCES+"templates/html/entity-edit.html");
-				HTMLCodeGenerator.generateTemplateFile(template,data,tEntityModel.getName()+"-edit",tEntityModel.getName());
-				template = cfg.getTemplate(CLASSPATH_RESOURCES+"templates/html/entity-add.html");
-				HTMLCodeGenerator.generateTemplateFile(template,data,tEntityModel.getName()+"-add",tEntityModel.getName());
-				template = cfg.getTemplate(CLASSPATH_RESOURCES+"templates/html/entity-list.html");
-				HTMLCodeGenerator.generateTemplateFile(template,data,tEntityModel.getName()+"-list",tEntityModel.getName());
 				
 				
 		 }catch (IOException e) {

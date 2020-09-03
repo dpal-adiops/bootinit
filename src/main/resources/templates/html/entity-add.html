@@ -18,15 +18,14 @@
 								 <h4 class="header2"><span>Add ${EntityModel.displayName} :</span></h4>
 								 <p class="caption">Fields with a red asterisk (*) are mandatory.</p>
 								  <p th:if="@@{error != null}" th:text="@@{error}" class="chip"></p>	
-								   <form action="#" th:action="@{/web/${EntityModel.name}s/add}" method="POST" id="editorForm" th:object="@@{${EntityModel.name}RO}">
+								   <form action="#" th:action="@{/admin/web/${EntityModel.name}s/add}" method="POST" id="editorForm" th:object="@@{${EntityModel.name}RO}">
 							             <div class="row">
 								            <#list EntityModel.fields as field>							           
-										          <#if field.initCapName == 'Desc'>
+										          <#if field.initCapName == 'Description'>
 										        	<div class="input-field col s12 l6">													  
-											          <input type="hidden" id="${field.camelCase}" name="${field.camelCase}"  th:field="*{${field.camelCase}}">
-										          	  <label for="${field.camelCase}">${field.initCapName}</label>
-										          	   <br><br>
-										          	  <div id="editor-container" th:utext="*{${field.camelCase}}"></div>
+											         <textarea id="description" class="validate"  name="description"  th:field="*{description}" style="height: 200px;" rows="10" cols="100"></textarea> 	
+										          	  <label for="description">Description</label>										          	   
+										          	   <!--<br><br><div id="editor-container"  style="height: 200px;" ><p th:utext="*{description}"></p></div>  -->		
 											        </div>
 										        <#else>
 											         <div class="input-field col s12 l6">

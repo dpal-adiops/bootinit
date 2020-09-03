@@ -19,4 +19,5 @@ import  ${EntityModel.packagePath}.entity.${EntityModel.displayName}Entity;
 @Repository
 public interface ${EntityModel.displayName}Repository extends JpaRepository<${EntityModel.displayName}Entity, Long>{
 
+	${EntityModel.displayName}Entity findByKeyid(String key);
 }

@@ -31,7 +31,7 @@ import ${relation.packagePath}.entity.${relation.displayName}Entity;
  *
  */
 @Entity(name = "${EntityModel.name}")
-@Table(uniqueConstraints={@UniqueConstraint(columnNames={"key"})})
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"keyid"})})
 public class ${EntityModel.displayName}Entity {
 
 	@Id

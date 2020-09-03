@@ -21,7 +21,7 @@
                   <ol class="breadcrumbs">
                     <li><a href="index.html">Dashboard</a>
                     </li>
-                    <li th:text=@@{${EntityModel.name}RO.key} class="active"></li>
+                    <li th:text=@@{${EntityModel.name}RO.keyid} class="active"></li>
                   </ol>
                 </div>                
               </div>
@@ -36,22 +36,21 @@
 						<div class="col s12 m12 l12">
 							<a class="btn blue" name="action">General</a>					
 							<#list EntityModel.manyToManyRelations as relation>
-					         	<a th:href="@{/web/${EntityModel.name}s/{id}/${relation.name}s(id=@@{${EntityModel.name}RO.id})}" name="action" class="btn grey lighten-5 grey-text">${relation.displayName}s</a>
+					         	<a th:href="@{/admin/web/${EntityModel.name}s/{id}/${relation.name}s(id=@@{${EntityModel.name}RO.id})}" name="action" class="btn grey lighten-5 grey-text">${relation.displayName}s</a>
 					        </#list>							
 							<div class="card-panel">								 
 								 <h4 class="header2"><span>Edit ${EntityModel.displayName} : General</span></h4>
 								 <p class="caption">Fields with a red asterisk (*) are mandatory.</p>	
 								 <p th:if="@@{error != null}" th:text="@@{error}" class="chip"></p>
-								   <form  th:action="@{/web/${EntityModel.name}s/add}" method="POST" id="editorForm"   th:object="@@{${EntityModel.name}RO}">
+								   <form  th:action="@{/admin/web/${EntityModel.name}s/add}" method="POST" id="editorForm"   th:object="@@{${EntityModel.name}RO}">
 							            <div class="row">
 								            <#list EntityModel.fields as field>								            
 										       
-										        <#if field.initCapName == 'Desc'>
+										        <#if field.initCapName == 'Description'>
 										        	<div class="input-field col s12 l6">													  
-											          <input type="hidden" id="${field.camelCase}" name="${field.camelCase}"  th:field="*{${field.camelCase}}">
-										          	  <label for="${field.camelCase}">${field.initCapName}</label>
-										          	   <br><br>
-										          	  <div id="editor-container" th:utext="*{${field.camelCase}}"></div>											        
+											          <textarea id="description" class="validate"  name="description"  th:field="*{description}" style="height: 200px;" rows="10" cols="100"></textarea> 	
+										          	  <label for="description">Description</label>										          	   
+										          	   <!--<br><br><div id="editor-container"  style="height: 200px;" ><p th:utext="*{description}"></p></div>  -->		
 											        </div>
 										        <#else>
 											         <div class="input-field col s12 l6">

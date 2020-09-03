@@ -9,23 +9,23 @@ public class CodeGenerator {
 	public static final String CLASSPATH_RESOURCES="src/main/resources/";
 	
 	public static void main(String[] args) throws Exception {		
-		String course="com.adiops.apigateway.;course=>key:String:0,name:String:1,desc:String:2,author_id:String:3";
+		String course="com.adiops.apigateway.;course=>keyid:String:0,name:String:1,description:String:2,author_id:String:3,domain_id:String:4";
 		EntityModel courseModel= getEntityModel(course);
-		String module="com.adiops.apigateway.;module=>key:String:0,name:String:1,desc:String:2";
+		String module="com.adiops.apigateway.;module=>keyid:String:0,name:String:1,description:String:2,author_id:String:3,domain_id:String:4";
 		EntityModel moduleModel= getEntityModel(module);
-		String topic="com.adiops.apigateway.;topic=>key:String:0,name:String:1,desc:String:2,title:String:3";
+		String topic="com.adiops.apigateway.;topic=>keyid:String:0,name:String:1,description:String:2,title:String:3,author_id:String:4,domain_id:String:5";
 		EntityModel topicModel= getEntityModel(topic);
 		
-		String question="com.adiops.apigateway.;question=>key:String:0,title:String:1,desc:String:2,answer:String:3";
+		String question="com.adiops.apigateway.;question=>keyid:String:0,title:String:1,description:String:2,answer:String:3,author_id:String:4,domain_id:String:6";
 		EntityModel questionModel= getEntityModel(question);
 		
-		String image="com.adiops.apigateway.;image=>key:String:0,name:String:1,url:String:2";
+		String image="com.adiops.apigateway.;image=>keyid:String:0,name:String:1,url:String:2,author_id:String:3,domain_id:String:4";
 		EntityModel imageModel= getEntityModel(image);
 		
-		String video="com.adiops.apigateway.;video=>key:String:0,name:String:1,url:String:2";
+		String video="com.adiops.apigateway.;video=>keyid:String:0,name:String:1,url:String:2,author_id:String:3,domain_id:String:4";
 		EntityModel videoModel= getEntityModel(video);
 		
-		String page="com.adiops.apigateway.;page=>key:String:0,name:String:1,desc:String:2";
+		String page="com.adiops.apigateway.;page=>keyid:String:0,name:String:1,description:String:2,author_id:String:3,domain_id:String:4";
 		EntityModel pageModel= getEntityModel(page);
 		
 		
@@ -74,6 +74,8 @@ public class CodeGenerator {
 		generateCode(imageModel);
 		generateCode(videoModel);
 		generateCode(pageModel);
+		
+		
 		
 		
 		

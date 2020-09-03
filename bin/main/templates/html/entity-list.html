@@ -16,7 +16,7 @@
 			<br>
 			<div class="row">
 				<div class="col s12">                   
-                   <a th:href="@{/web/${EntityModel.name}s/add}"  id="scale-demo" href="#!" class="btn-floating btn-large scale-transition">
+                   <a th:href="@{/admin/web/${EntityModel.name}s/add}"  id="scale-demo" href="#!" class="btn-floating btn-large scale-transition">
 					    <i class="material-icons">add</i>
 					</a>
                   The list shows all ${EntityModel.name}s of the author. Click New to add ${EntityModel.name}.             
@@ -26,7 +26,7 @@
 						<thead>
 						<tr>
 							 <#list EntityModel.fields as field>
-							   <#if field.initCapName != 'Desc'>
+							   <#if field.initCapName != 'Description'>
 							  	<th>${field.initCapName}</th>
 							  </#if>
 							 </#list>
@@ -39,12 +39,12 @@
 				        </tr>
 						 <tr th:each ="${EntityModel.name} : @@{${EntityModel.name}s}">
 							  <#list EntityModel.fields as field>
-							 	 <#if field.initCapName != 'Desc'>
-							 	<td><a th:href="@{/web/${EntityModel.name}s/{id}(id=@@{${EntityModel.name}.id})}"><span th:text="@@{${EntityModel.name}.${field.camelCase}}"></span></a></td>
+							 	 <#if field.initCapName != 'Description'>
+							 	<td><a th:href="@{/admin/web/${EntityModel.name}s/{id}(id=@@{${EntityModel.name}.id})}"><span th:text="@@{${EntityModel.name}.${field.camelCase}}"></span></a></td>
 							  	</#if>
 							  </#list>
 							 <td>
-				                <a th:href="@{/web/${EntityModel.name}s/{id}/delete(id=@@{${EntityModel.name}.id})}" class="btn-floating btn-small"> <i class="material-icons">delete</i></a>
+				                <a th:href="@{/admin/web/${EntityModel.name}s/{id}/delete(id=@@{${EntityModel.name}.id})}" class="btn-floating btn-small"> <i class="material-icons">delete</i></a>
 				            </td>
 						</tr>
 						</tbody>

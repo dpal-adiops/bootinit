@@ -28,19 +28,19 @@ public class HTMLCodeGenerator {
 				data.put(EntityModel.class.getSimpleName(),tEntityModel);
 				
 				Template template = cfg.getTemplate(CLASSPATH_RESOURCES+"templates/html/entity-edit.html");
-				HTMLCodeGenerator.generateTemplateFile(template,data,tEntityModel.getName()+"-edit",tEntityModel.getName());
+				HTMLCodeGenerator.generateTemplateFile(template,data,tEntityModel.getName()+"-edit","admin/"+tEntityModel.getName());
 				template = cfg.getTemplate(CLASSPATH_RESOURCES+"templates/html/entity-add.html");
-				HTMLCodeGenerator.generateTemplateFile(template,data,tEntityModel.getName()+"-add",tEntityModel.getName());
+				HTMLCodeGenerator.generateTemplateFile(template,data,tEntityModel.getName()+"-add","admin/"+tEntityModel.getName());
 				template = cfg.getTemplate(CLASSPATH_RESOURCES+"templates/html/entity-list.html");
-				HTMLCodeGenerator.generateTemplateFile(template,data,tEntityModel.getName()+"-list",tEntityModel.getName());
+				HTMLCodeGenerator.generateTemplateFile(template,data,tEntityModel.getName()+"-list","admin/"+tEntityModel.getName());
 				
 				//add relation model
 				for (EntityModel rEntityModel : tEntityModel.getManyToManyRelations()) {
 					data.put("RelationModel",rEntityModel);
 					template = cfg.getTemplate(CLASSPATH_RESOURCES+"templates/html/relation/module-list.html");
-					HTMLCodeGenerator.generateTemplateFile(template,data,rEntityModel.getName()+"-list",tEntityModel.getName()+"/"+rEntityModel.getName());
+					HTMLCodeGenerator.generateTemplateFile(template,data,rEntityModel.getName()+"-list","admin/"+tEntityModel.getName()+"/"+rEntityModel.getName());
 					template = cfg.getTemplate(CLASSPATH_RESOURCES+"templates/html/relation/module-assign.html");
-					HTMLCodeGenerator.generateTemplateFile(template,data,rEntityModel.getName()+"-assign",tEntityModel.getName()+"/"+rEntityModel.getName());
+					HTMLCodeGenerator.generateTemplateFile(template,data,rEntityModel.getName()+"-assign","admin/"+tEntityModel.getName()+"/"+rEntityModel.getName());
 				}
 			
 				

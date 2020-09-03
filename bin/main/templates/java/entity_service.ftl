@@ -3,6 +3,8 @@ package  ${EntityModel.packagePath}.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,7 +55,7 @@ public class ${EntityModel.displayName}Service{
 	 */
 	
 	public List<${EntityModel.displayName}RO> get${EntityModel.displayName}ROs() {
-		List<${EntityModel.displayName}RO> t${EntityModel.displayName}ROs = m${EntityModel.displayName}Repository.findAll().stream()
+		List<${EntityModel.displayName}RO> t${EntityModel.displayName}ROs = m${EntityModel.displayName}Repository.findAll(Sort.by(Sort.Direction.ASC, "keyid")).stream()
 				.map(entity -> mModelMapper.map(entity, ${EntityModel.displayName}RO.class)).collect(Collectors.toList());
 		return t${EntityModel.displayName}ROs;
 	}
@@ -182,7 +184,14 @@ public class ${EntityModel.displayName}Service{
 					t${relation.displayName}ROs.add(mModelMapper.map(re, ${relation.displayName}RO.class));
 				});
 			});
-		}				
+		}	
+		Collections.sort(t${relation.displayName}ROs, new Comparator<${relation.displayName}RO>() {
+			  @Override
+			  public int compare(${relation.displayName}RO u1, ${relation.displayName}RO u2) {
+			    return u1.getKeyid().compareTo(u2.getKeyid());
+			  }
+			});
+						
 		return t${relation.displayName}ROs;
 	}
 	
@@ -239,5 +248,15 @@ public class ${EntityModel.displayName}Service{
 	}
 	
 	</#list>
+	
+	
+	public ${EntityModel.displayName}RO get${EntityModel.displayName}ByKeyId(String key) throws RestException {
+		Optional<?> t${EntityModel.displayName}= Optional.ofNullable(m${EntityModel.displayName}Repository.findByKeyid(key));
+		 if(t${EntityModel.displayName}.isPresent()) {
+	            return mModelMapper.map(t${EntityModel.displayName}.get(), TopicRO.class);
+	        } else {
+	            throw new RestException("No ${EntityModel.name} record exist for given id");
+	        }
+	}
 	
 }

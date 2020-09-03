@@ -22,7 +22,7 @@
                   <ol class="breadcrumbs">
                     <li><a href="index.html">Dashboard</a>
                     </li>
-                    <li th:text=@@{${EntityModel.name}RO.key} class="active"></li>
+                    <li th:text=@@{${EntityModel.name}RO.keyid} class="active"></li>
                   </ol>
                 </div>                
               </div>
@@ -35,18 +35,18 @@
 				<div id="basic-form" class="section">
 					<div class="row">
 						<div class="col s12 m12 l12">
-							<a th:href="@{/web/${EntityModel.name}s/{id}(id=@@{${EntityModel.name}RO.id})}" class="btn grey lighten-5 grey-text" name="action">General</a>					
+							<a th:href="@{/admin/web/${EntityModel.name}s/{id}(id=@@{${EntityModel.name}RO.id})}" class="btn grey lighten-5 grey-text" name="action">General</a>					
 							<#list EntityModel.manyToManyRelations as relation>
 					         	<#if RelationModel.name == relation.name>
-					         		<a th:href="@{/web/${EntityModel.name}s/{id}/${relation.name}s(id=@@{${EntityModel.name}RO.id})}" name="action" class="btn blue">${relation.displayName}s</a>
+					         		<a th:href="@{/admin/web/${EntityModel.name}s/{id}/${relation.name}s(id=@@{${EntityModel.name}RO.id})}" name="action" class="btn blue">${relation.displayName}s</a>
 					        	<#else>
-					        		<a th:href="@{/web/${EntityModel.name}s/{id}/${relation.name}s(id=@@{${EntityModel.name}RO.id})}" name="action" class="btn grey lighten-5 grey-text">${relation.displayName}s</a>
+					        		<a th:href="@{/admin/web/${EntityModel.name}s/{id}/${relation.name}s(id=@@{${EntityModel.name}RO.id})}" name="action" class="btn grey lighten-5 grey-text">${relation.displayName}s</a>
 					        	</#if>
 					        </#list>
 							<div class="card-panel">
 								<div class="row">
 									<div class="col s12">                   
-					                   <a th:href="@{/web/${EntityModel.name}s/{id}/${RelationModel.name}s/assign(id=@@{${EntityModel.name}RO.id})}"   id="scale-demo" href="#!" class="btn-floating btn-large scale-transition">
+					                   <a th:href="@{/admin/web/${EntityModel.name}s/{id}/${RelationModel.name}s/assign(id=@@{${EntityModel.name}RO.id})}"   id="scale-demo" href="#!" class="btn-floating btn-large scale-transition">
 										    <i class="material-icons">add</i>
 										</a>
 					                  The list shows all assigned ${RelationModel.name}s. Click assign to add more ${RelationModel.name}.             
@@ -55,9 +55,9 @@
 										<table class="centered">
 											<thead>
 												<tr>
-													 <th>Key</th>
+													 <th>keyid</th>
 													 <#list RelationModel.fields as field>
-													   <#if field.camelCase != 'key' && field.initCapName != 'Desc'>
+													   <#if field.camelCase != 'keyid' && field.initCapName != 'Description'>
 													  		<th>${field.initCapName}</th>
 													   </#if>
 													 </#list>
@@ -69,14 +69,14 @@
 										            <td colspan="3"> No ${RelationModel.displayName} Available </td>
 										        </tr>
 												  <tr th:each ="${RelationModel.name} : @@{${RelationModel.name}s}">
-													   <td ><a th:href="@{/web/${RelationModel.name}s/{id}(id=@@{${RelationModel.name}.id})}"><span th:text="@@{${RelationModel.name}.key}"></span></a></td>
+													   <td ><a th:href="@{/admin/web/${RelationModel.name}s/{id}(id=@@{${RelationModel.name}.id})}"><span th:text="@@{${RelationModel.name}.keyid}"></span></a></td>
 														  <#list RelationModel.fields as field>
-															 <#if field.camelCase != 'key' && field.initCapName != 'Desc'>
+															 <#if field.camelCase != 'keyid' && field.initCapName != 'Description'>
 															 	<td th:text="@@{${RelationModel.name}.${field.camelCase}}"></td>
 															 </#if>
 														 </#list>
 													 <td>
-										                <a th:href="@{/web/${EntityModel.name}s/{${EntityModel.name}_id}/${RelationModel.name}s/{id}/unassign(${EntityModel.name}_id=@@{${EntityModel.name}RO.id},id=@@{${RelationModel.name}.id})}" class="btn-floating btn-small"> <i class="material-icons">delete</i></a>
+										                <a th:href="@{/admin/web/${EntityModel.name}s/{${EntityModel.name}_id}/${RelationModel.name}s/{id}/unassign(${EntityModel.name}_id=@@{${EntityModel.name}RO.id},id=@@{${RelationModel.name}.id})}" class="btn-floating btn-small"> <i class="material-icons">delete</i></a>
 										            </td>
 												</tr>
 											</tbody>

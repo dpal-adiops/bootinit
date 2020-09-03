@@ -23,7 +23,7 @@ public class EntityModel {
 	public EntityModel(String packagePath, String name) {
 		super();
 		this.parentPackage = packagePath;
-		this.packagePath = packagePath+name;
+		this.packagePath = packagePath+StringUtils.replace(name, "_", ".");
 		this.name = name;
 		this.displayName=StringUtils.capitalize(CaseUtils.toCamelCase(name, false, '_'));
 	}

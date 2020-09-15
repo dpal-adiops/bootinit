@@ -29,6 +29,23 @@ import ${relation.packagePath}.entity.${relation.displayName}Entity;
 import ${relation.packagePath}.repository.${relation.displayName}Repository;
 import ${relation.packagePath}.resourceobject.${relation.displayName}RO;
 </#list>
+<#list EntityModel.oneToManyRelations as relation>
+import ${relation.packagePath}.entity.${relation.displayName}Entity;
+import ${relation.packagePath}.repository.${relation.displayName}Repository;
+import ${relation.packagePath}.resourceobject.${relation.displayName}RO;
+</#list>
+
+<#list EntityModel.oneToOneRelations as relation>
+import ${relation.packagePath}.entity.${relation.displayName}Entity;
+import ${relation.packagePath}.repository.${relation.displayName}Repository;
+import ${relation.packagePath}.resourceobject.${relation.displayName}RO;
+</#list>
+
+<#list EntityModel.manyToOneRelations as relation>
+import ${relation.packagePath}.entity.${relation.displayName}Entity;
+import ${relation.packagePath}.repository.${relation.displayName}Repository;
+import ${relation.packagePath}.resourceobject.${relation.displayName}RO;
+</#list>
 
 
 /**
@@ -46,6 +63,24 @@ public class ${EntityModel.displayName}Service{
 	@Autowired
 	${relation.displayName}Repository m${relation.displayName}Repository;
 	</#list>
+	
+	<#list EntityModel.oneToManyRelations as relation>
+	@Autowired
+	${relation.displayName}Repository m${relation.displayName}Repository;
+	</#list>
+	
+	<#list EntityModel.oneToOneRelations as relation>
+	<#if EntityModel.displayName != relation.displayName>	
+	@Autowired
+	${relation.displayName}Repository m${relation.displayName}Repository;
+	 </#if>
+	</#list>
+	
+	<#list EntityModel.manyToOneRelations as relation>
+	@Autowired
+	${relation.displayName}Repository m${relation.displayName}Repository;
+	</#list>
+	
 	@Autowired
 	private ModelMapper mModelMapper;
 
@@ -250,13 +285,161 @@ public class ${EntityModel.displayName}Service{
 	</#list>
 	
 	
-	public ${EntityModel.displayName}RO get${EntityModel.displayName}ByKeyId(String key) throws RestException {
-		Optional<?> t${EntityModel.displayName}= Optional.ofNullable(m${EntityModel.displayName}Repository.findByKeyid(key));
-		 if(t${EntityModel.displayName}.isPresent()) {
-	            return mModelMapper.map(t${EntityModel.displayName}.get(), TopicRO.class);
-	        } else {
-	            throw new RestException("No ${EntityModel.name} record exist for given id");
-	        }
+	<#list EntityModel.oneToManyRelations as relation>
+	
+	/**
+	 *
+	 * fetch list of ${EntityModel.displayName} ${relation.name}s
+	 */
+	
+	public List<${relation.displayName}RO> find${EntityModel.displayName}${relation.displayName}s(Long id) {
+		List<${relation.displayName}RO> t${relation.displayName}ROs= new ArrayList<>();   
+		Optional<${EntityModel.displayName}Entity> t${EntityModel.displayName} = m${EntityModel.displayName}Repository.findById(id);
+		if(t${EntityModel.displayName}.isPresent()) {
+			t${EntityModel.displayName}.ifPresent(en->{
+				en.get${relation.displayName}s().forEach(re->{					
+					t${relation.displayName}ROs.add(mModelMapper.map(re, ${relation.displayName}RO.class));
+				});
+			});
+		}	
+		Collections.sort(t${relation.displayName}ROs, new Comparator<${relation.displayName}RO>() {
+			  @Override
+			  public int compare(${relation.displayName}RO u1, ${relation.displayName}RO u2) {
+			    return u1.getKeyid().compareTo(u2.getKeyid());
+			  }
+			});
+						
+		return t${relation.displayName}ROs;
 	}
 	
+	/**
+	 *
+	 * assign a ${relation.name} to ${EntityModel.name}
+	 */
+	
+	public void add${EntityModel.displayName}${relation.displayName}(Long id, Long ${relation.name}Id) {
+		Optional<${relation.displayName}Entity> t${relation.displayName} = m${relation.displayName}Repository.findById(${relation.name}Id);
+		Optional<${EntityModel.displayName}Entity> t${EntityModel.displayName} = m${EntityModel.displayName}Repository.findById(id);
+		if(t${relation.displayName}.isPresent() && t${EntityModel.displayName}.isPresent()) {
+			${EntityModel.displayName}Entity t${EntityModel.displayName}Entity=t${EntityModel.displayName}.get();
+			${relation.displayName}Entity t${relation.displayName}Entity= t${relation.displayName}.get();
+			t${EntityModel.displayName}Entity.get${relation.displayName}s().add(t${relation.displayName}Entity);
+			t${relation.displayName}Entity.set${EntityModel.displayName}(t${EntityModel.displayName}Entity);
+			m${EntityModel.displayName}Repository.save(t${EntityModel.displayName}Entity);
+		}
+			
+	}
+	
+	/**
+	 *
+	 * unassign a ${relation.name} to ${EntityModel.name}
+	 */
+	
+	public void unassign${EntityModel.displayName}${relation.displayName}(Long id, Long ${relation.name}Id) {
+		Optional<${relation.displayName}Entity> t${relation.displayName} = m${relation.displayName}Repository.findById(${relation.name}Id);
+		Optional<${EntityModel.displayName}Entity> t${EntityModel.displayName} = m${EntityModel.displayName}Repository.findById(id);
+		if(t${relation.displayName}.isPresent() && t${EntityModel.displayName}.isPresent()) {
+			${EntityModel.displayName}Entity t${EntityModel.displayName}Entity=t${EntityModel.displayName}.get();
+			t${EntityModel.displayName}Entity.get${relation.displayName}s().remove(t${relation.displayName}.get());
+			m${EntityModel.displayName}Repository.save(t${EntityModel.displayName}Entity);
+		}
+			
+	}
+	
+	/**
+	 *
+	 * fetch list of ${EntityModel.displayName} ${relation.name}s
+	 */
+	
+	public List<${relation.displayName}RO> findUnassign${EntityModel.displayName}${relation.displayName}s(Long id) {
+		List<${relation.displayName}RO> t${relation.displayName}ROs= new ArrayList<>();   
+		 m${EntityModel.displayName}Repository.findById(id).ifPresent(en->{
+			 List<${relation.displayName}Entity> t${relation.displayName}s = m${relation.displayName}Repository.findAll();
+			 t${relation.displayName}s.removeAll(en.get${relation.displayName}s());
+			 t${relation.displayName}s.forEach(re->{					
+					t${relation.displayName}ROs.add(mModelMapper.map(re, ${relation.displayName}RO.class));
+				});
+		 });
+		
+		return t${relation.displayName}ROs;
+	}
+	
+	</#list>
+	
+	
+	public ${EntityModel.displayName}RO get${EntityModel.displayName}ByKeyId(String key) {
+		Optional<?> t${EntityModel.displayName}= Optional.ofNullable(m${EntityModel.displayName}Repository.findByKeyid(key));
+		 if(t${EntityModel.displayName}.isPresent()) {
+	            return mModelMapper.map(t${EntityModel.displayName}.get(), ${EntityModel.displayName}RO.class);
+	        }
+	      return null;  
+	}
+	
+	
+	<#list EntityModel.oneToOneRelations as relation>
+	public ${relation.displayName}RO get${EntityModel.displayName}${relation.displayName}(Long id) throws RestException {
+		 Optional<${EntityModel.displayName}Entity> t${EntityModel.displayName} = m${EntityModel.displayName}Repository.findById(id);         
+	        if(t${EntityModel.displayName}.isPresent()) {
+	        	${relation.displayName}Entity t${relation.displayName}Entity= t${EntityModel.displayName}.get().get${relation.displayName}();
+	        	if(t${relation.displayName}Entity!=null)
+	        		return mModelMapper.map(t${relation.displayName}Entity, ${relation.displayName}RO.class) ;
+	        } else {
+	            throw new RestException("No ${EntityModel.name} record exist for given id");
+	        }	        
+	     return null;   
+	}
+	
+	public void add${EntityModel.displayName}${relation.displayName}(Long id,Long learningTrackQuestionid){
+		 Optional<${EntityModel.displayName}Entity> t${EntityModel.displayName} = m${EntityModel.displayName}Repository.findById(id);         
+	        if(t${EntityModel.displayName}.isPresent()) {
+	        	Optional<${relation.displayName}Entity> t${relation.displayName}EntityOpt = m${relation.displayName}Repository.findById(learningTrackQuestionid);
+	        	${EntityModel.displayName}Entity t${EntityModel.displayName}Entity=t${EntityModel.displayName}.get();
+	        	t${relation.displayName}EntityOpt.ifPresent(entity->{
+	        		t${EntityModel.displayName}Entity.set${relation.displayName}(entity);
+	        	});
+	        		        		
+	        }         
+	}	
+	
+	public void unassign${EntityModel.displayName}${relation.displayName}(Long id){
+		 Optional<${EntityModel.displayName}Entity> t${EntityModel.displayName} = m${EntityModel.displayName}Repository.findById(id);         
+	        if(t${EntityModel.displayName}.isPresent()) {
+	        	t${EntityModel.displayName}.get().set${relation.displayName}(null);	        		        		
+	        }         
+	}
+	</#list>
+	
+	
+	<#list EntityModel.manyToOneRelations as relation>
+	public ${relation.displayName}RO get${EntityModel.displayName}${relation.displayName}(Long id) throws RestException {
+		 Optional<${EntityModel.displayName}Entity> t${EntityModel.displayName} = m${EntityModel.displayName}Repository.findById(id);         
+	        if(t${EntityModel.displayName}.isPresent()) {
+	        	${relation.displayName}Entity t${relation.displayName}Entity= t${EntityModel.displayName}.get().get${relation.displayName}();
+	        	if(t${relation.displayName}Entity!=null)
+	        		return mModelMapper.map(t${relation.displayName}Entity, ${relation.displayName}RO.class) ;
+	        } else {
+	            throw new RestException("No ${EntityModel.name} record exist for given id");
+	        }	        
+	     return null;   
+	}
+	
+	public void add${EntityModel.displayName}${relation.displayName}(Long id,Long learningTrackQuestionid){
+		 Optional<${EntityModel.displayName}Entity> t${EntityModel.displayName} = m${EntityModel.displayName}Repository.findById(id);         
+	        if(t${EntityModel.displayName}.isPresent()) {
+	        	Optional<${relation.displayName}Entity> t${relation.displayName}EntityOpt = m${relation.displayName}Repository.findById(learningTrackQuestionid);
+	        	${EntityModel.displayName}Entity t${EntityModel.displayName}Entity=t${EntityModel.displayName}.get();
+	        	t${relation.displayName}EntityOpt.ifPresent(entity->{
+	        		t${EntityModel.displayName}Entity.set${relation.displayName}(entity);
+	        	});
+	        		        		
+	        }         
+	}	
+	
+	public void unassign${EntityModel.displayName}${relation.displayName}(Long id){
+		 Optional<${EntityModel.displayName}Entity> t${EntityModel.displayName} = m${EntityModel.displayName}Repository.findById(id);         
+	        if(t${EntityModel.displayName}.isPresent()) {
+	        	t${EntityModel.displayName}.get().set${relation.displayName}(null);	        		        		
+	        }         
+	}
+	</#list>
 }

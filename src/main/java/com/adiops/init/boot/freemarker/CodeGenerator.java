@@ -16,7 +16,7 @@ public class CodeGenerator {
 		String topic="com.adiops.apigateway.;topic=>keyid:String:0,name:String:1,description:String:2,title:String:3,author_id:String:4,domain_id:String:5";
 		EntityModel topicModel= getEntityModel(topic);
 		
-		String question="com.adiops.apigateway.;question=>keyid:String:0,title:String:1,description:String:2,answer:String:3,author_id:String:4,domain_id:String:6";
+		String question="com.adiops.apigateway.;question=>keyid:String:0,title:String:1,description:String:2,answer:String:3,author_id:String:4,domain_id:String:5";
 		EntityModel questionModel= getEntityModel(question);
 		
 		String image="com.adiops.apigateway.;image=>keyid:String:0,name:String:1,url:String:2,author_id:String:3,domain_id:String:4";

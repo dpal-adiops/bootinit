@@ -14,11 +14,13 @@ public class EntityModel {
 	String name;
 	String displayName;	
 	String codeGeneratePath;
+	String initName;
 	
 	List<EntityFieldType> fields = new ArrayList<>();
 	List<EntityModel> oneToManyRelations = new ArrayList<>();
 	List<EntityModel> manyToManyRelations = new ArrayList<>();
 	List<EntityModel> oneToOneRelations = new ArrayList<>();
+	List<EntityModel> manyToOneRelations = new ArrayList<>();
 	
 	public EntityModel(String packagePath, String name) {
 		super();
@@ -26,6 +28,7 @@ public class EntityModel {
 		this.packagePath = packagePath+StringUtils.replace(name, "_", ".");
 		this.name = name;
 		this.displayName=StringUtils.capitalize(CaseUtils.toCamelCase(name, false, '_'));
+		this.initName=StringUtils.uncapitalize(this.displayName);
 	}
 
 	public String getPackagePath() {
@@ -114,4 +117,51 @@ public class EntityModel {
 		}
 		
 	}
+
+	public void addOneToManyRelation(EntityModel oneToManyRelation) {
+		this.oneToManyRelations.add(oneToManyRelation);
+	}
+
+	public List<EntityModel> getOneToManyRelations() {
+		return oneToManyRelations;
+	}
+
+	public void setOneToManyRelations(List<EntityModel> oneToManyRelations) {
+		this.oneToManyRelations = oneToManyRelations;
+	}
+
+	public void addManyToOneRelation(EntityModel manyToOneRelations) {
+		this.manyToOneRelations.add(manyToOneRelations);
+	}
+	
+	public List<EntityModel> getManyToOneRelations() {
+		return manyToOneRelations;
+	}
+
+	public void setManyToOneRelations(List<EntityModel> manyToOneRelations) {
+		this.manyToOneRelations = manyToOneRelations;
+	}
+
+	public void addOneToOneRelation(EntityModel oneToOneRelation) {
+		this.oneToOneRelations.add(oneToOneRelation);
+		
+	}
+
+	public List<EntityModel> getOneToOneRelations() {
+		return oneToOneRelations;
+	}
+
+	public void setOneToOneRelations(List<EntityModel> oneToOneRelations) {
+		this.oneToOneRelations = oneToOneRelations;
+	}
+
+	public String getInitName() {
+		return initName;
+	}
+
+	public void setInitName(String initName) {
+		this.initName = initName;
+	}
+	
+	
 }
